@@ -24,7 +24,7 @@ func NewConfigUseCmd() *ConfigUseCmd {
 		cmd: &cobra.Command{
 			Use:     "use",
 			Short:   "switches to the specified configuration file",
-			Example: `dbman config use myapp_dev`,
+			Example: `dbman config use -n myapp_dev`,
 		}}
 	c.cmd.Run = c.Run
 	c.cmd.Flags().StringVarP(&c.cfgPath, "path", "p", "", "set the path where the configuration files are written")
