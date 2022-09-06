@@ -115,15 +115,15 @@ func (db *PgSQLProvider) RunCommand(command *Command) (bytes.Buffer, error) {
 		// for each database script in the command
 		for _, script := range command.Scripts {
 			// execute the content of the script
-			_, err := tx.Exec(context.Background(), script.Content)
+			_, err = tx.Exec(context.Background(), script.Content)
 			// log the execution step
 			log.WriteString(fmt.Sprintf("? I have executed the script '%s'\n", script.Name))
 			// if we have an error return it
-			if isNull, err := db.error(err); !isNull {
+			if isNull, dbErr := db.error(err); !isNull {
 				// rollback the transaction
 				tx.Rollback(context.Background())
 				// return the error
-				return log, err
+				return log, fmt.Errorf("failed to execute script: %s, %s", script.File, dbErr)
 			}
 		}
 		// all good so commit the transaction
