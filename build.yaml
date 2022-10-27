@@ -55,6 +55,8 @@ functions:
       - cp ./plugin/pgsql/bin/linux/${PLUGIN_PREFIX}pgsql ./build
       - cp bin/linux/dbman build
       - docker build -t ${IMG_REPO}/${IMG_NAME}:${BUILD} ./buiLd
+      - docker tag ${IMG_REPO}/${IMG_NAME}:${BUILD} ${IMG_REPO}/${IMG_NAME}:latest
       - docker login quay.io -u artisan -p ${IMG_REG_PWD}
       - docker push ${IMG_REPO}/${IMG_NAME}:${BUILD}
+      - docker push ${IMG_REPO}/${IMG_NAME}:latest
 ...
