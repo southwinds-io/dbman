@@ -306,7 +306,11 @@ func getHttpFile(uri, creds string) ([]byte, error) {
 	req.Header.Add("Pragma", "no-cache")
 	// execute the request
 	resp, err := client.Do(req)
-	defer resp.Body.Close()
+	defer func() {
+		if resp != nil && resp.Body != nil {
+			resp.Body.Close()
+		}
+	}()
 	if err != nil {
 		return nil, err
 	}
