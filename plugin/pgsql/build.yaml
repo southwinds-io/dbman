@@ -1,0 +1,10 @@
+---
+env:
+    PLUGIN_PREFIX: "dbman-db-"
+functions:
+   - name: build-linux
+     env:
+        GOOS: linux
+     run:
+        - go build -o bin/linux/${PLUGIN_PREFIX}pgsql
+...

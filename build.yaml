@@ -8,6 +8,10 @@ labels:
 env:
   CGO_ENABLED: 0
   GOARCH: amd64
+  IMG_REPO: quay.io/artisan
+  IMG_NAME: dbman
+  BUILD: 1.0.0-${ARTISAN_REF}
+  PLUGIN_PREFIX: "dbman-db-"
 
 profiles:
   - name: linux
@@ -42,4 +46,15 @@ functions:
     description: generates/refreshes the OpenAPI specifications for DbMan's HTTP API
     run:
       - swag init -d "./" -g core/handlers.go
+
+  - name: build-image
+    run:
+      - docker pull registry.access.redhat.com/ubi8/ubi-minimal
+      - $(build-linux)
+      - artc run build-linux ./plugin/pgsql
+      - cp ./plugin/pgsql/bin/linux/${PLUGIN_PREFIX}pgsql ./build
+      - cp bin/linux/dbman build
+      - docker build -t ${IMG_REPO}/${IMG_NAME}:${BUILD} ./buiLd
+      - docker login quay.io -u artisan -p ${IMG_REG_PWD}
+      - docker push ${IMG_REPO}/${IMG_NAME}:${BUILD}
 ...
