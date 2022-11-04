@@ -10,6 +10,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 	. "southwinds.dev/dbman/core"
 )
 
@@ -36,7 +37,7 @@ func (c *DbDeployCmd) Run(cmd *cobra.Command, args []string) {
 		fmt.Printf("!!! I cannot deploy the database\n")
 		fmt.Printf("%v\n", err)
 		fmt.Printf("? the execution time was %v\n", elapsed)
-		return
+		os.Exit(-1)
 	}
 	fmt.Printf("? I have deployed the database in %v\n", elapsed)
 }
