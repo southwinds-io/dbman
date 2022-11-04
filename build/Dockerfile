@@ -15,7 +15,7 @@ ENV UID=1000
 ENV GID=1000
 RUN microdnf install shadow-utils.x86_64 && \
     groupadd -g $GID -o $UNAME && \
-    useradd -M -u $UID -g $GID $UNAME && \
+    useradd -m -u $UID -g $GID $UNAME && \
     rm -rf /var/cache/yum && \
     microdnf clean all
 WORKDIR /app
@@ -26,6 +26,7 @@ COPY dbman dbman-db-* /app/
 COPY .dbman.toml .dbman_default.toml /home/dbman/
 # 2. if running in openshift user home is "/"
 COPY .dbman.toml .dbman_default.toml /
+RUN chown -R $UNAME:$UNAME /home/dbman
 USER $UNAME
 CMD ["/app/dbman", "serve"]
 EXPOSE 8085/tcp
