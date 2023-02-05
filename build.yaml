@@ -56,7 +56,7 @@ functions:
       - cp bin/linux/dbman build
       - docker build -t ${IMG_REPO}/${IMG_NAME}:${BUILD} ./build
       - docker tag ${IMG_REPO}/${IMG_NAME}:${BUILD} ${IMG_REPO}/${IMG_NAME}:latest
-      - docker login quay.io -u artisan -p ${IMG_REG_PWD}
+#      - docker login quay.io -u artisan -p ${IMG_REG_PWD}
       - docker push ${IMG_REPO}/${IMG_NAME}:${BUILD}
       - docker push ${IMG_REPO}/${IMG_NAME}:latest
 ...

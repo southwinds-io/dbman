@@ -12,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gorilla/mux"
+	"log"
 	. "southwinds.dev/dbman/plugin"
 	"strings"
 	"time"
@@ -132,6 +133,41 @@ func (dm *DbMan) CheckConfigSet() map[string]string {
 		results["db connection"] = "OK"
 	}
 	return results
+}
+
+// WaitForConnection wait until a connection to the database can be established
+// retries a number of attempts every interval and finally fails if not successful
+func (dm *DbMan) WaitForConnection(attempts, interval int) error {
+	// try and connect to the database
+	// create a dummy action with no scripts to test the connection
+	testConnCmd := &Command{
+		Name:          "test connection",
+		Description:   "",
+		Transactional: false,
+		AsAdmin:       true,
+		UseDb:         false,
+		Scripts:       []Script{},
+	}
+	var (
+		connected bool
+		errorMsg  string
+	)
+	for attempt := 0; attempt < attempts; attempt++ {
+		r := dm.DbPlugin().RunCommand(testConnCmd.ToString())
+		result := NewParameterFromJSON(r)
+		if result.HasError() {
+			errorMsg = result.Error().Error()
+			log.Printf("attempt %d waiting for database connection, retrying in %d seconds...\n", attempt, interval)
+			time.Sleep(time.Duration(interval) * time.Second)
+			continue
+		}
+		connected = true
+		break
+	}
+	if !connected {
+		return fmt.Errorf("failed to connect to database after %d attempts: %s\n", attempts, errorMsg)
+	}
+	return nil
 }
 
 func (dm *DbMan) Create() (log bytes.Buffer, err error, elapsed time.Duration) {
