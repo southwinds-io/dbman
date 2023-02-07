@@ -37,7 +37,7 @@ func (c *DbCreateCmd) Run(cmd *cobra.Command, args []string) {
 		fmt.Printf("!!! I cannot create the database\n")
 		fmt.Printf("%v\n", err)
 		fmt.Printf("? the execution time was %v\n", elapsed)
-		os.Exit(-1)
+		os.Exit(1)
 	}
 	fmt.Printf("? I have created the database in %v\n", elapsed)
 }
