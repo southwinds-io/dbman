@@ -29,7 +29,7 @@ func NewWaitCmd() *WaitCmd {
 `,
 		}}
 	c.cmd.Flags().IntVarP(&c.attempts, "attempts", "a", 10, "-a 10; the number of attempts before exiting with code 1")
-	c.cmd.Flags().IntVarP(&c.attempts, "interval", "i", 3, "-i 3; the number of seconds between attempts")
+	c.cmd.Flags().IntVarP(&c.interval, "interval", "i", 3, "-i 3; the number of seconds between attempts")
 	c.cmd.Run = c.Run
 	return c
 }
