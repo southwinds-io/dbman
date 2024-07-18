@@ -35,6 +35,14 @@ functions:
     run:
       - go build -trimpath -ldflags="-s -w" -o bin/darwin/dbman -v
 
+  - name: build-mac-amd64
+    description: builds the DbMan CLI for MacOS
+    env:
+      GOOS: darwin
+      GOARCH: amd64
+    run:
+      - go build -trimpath -ldflags="-s -w" -o bin/${GOOS}/${GOARCH}/dbman -v
+
   - name: build-linux-amd64
     description: builds the DbMan CLI for the linux platform
     env:
