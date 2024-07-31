@@ -202,13 +202,17 @@ func (db *PgSQLProvider) RunQuery(query *Query) (*Table, error) {
 			} else if v, ok := value.(pgtype.Interval); ok {
 				t := db.toTime(v.Microseconds)
 				row = append(row, t)
+			} else if v, ok := value.(pgtype.VarcharArray); ok {
+				for _, element := range v.Elements {
+					row = append(row, element.String)
+				}
 			} else if v, ok := value.(int32); ok {
 				n := strconv.Itoa(int(v))
 				row = append(row, n)
 			} else {
 				valueType := reflect.TypeOf(value)
 				if valueType != nil {
-					row = append(row, fmt.Sprintf("unsupported type '%s.%s'", valueType.PkgPath(), valueType.Name()))
+					row = append(row, fmt.Sprintf("the query interface does not currently support the data type '%s.%s'", valueType.PkgPath(), valueType.Name()))
 				}
 			}
 		}
