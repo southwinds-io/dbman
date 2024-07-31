@@ -238,6 +238,22 @@ func (dm *DbMan) Deploy() (log bytes.Buffer, err error, elapsed time.Duration) {
 	return log, err, time.Since(start)
 }
 
+func (dm *DbMan) Run(cmdNames []string) (log bytes.Buffer, err error, elapsed time.Duration) {
+	start := time.Now()
+	log = bytes.Buffer{}
+	_, manifest, err := dm.script.fetchManifest(dm.get(AppVersion))
+	if err != nil {
+		return log, err, time.Since(start)
+	}
+	cmds := manifest.GetCommands(cmdNames)
+	output, err := dm.runCommands(cmds, manifest)
+	log.WriteString(output.String())
+	if err != nil {
+		return log, err, time.Since(start)
+	}
+	return log, err, time.Since(start)
+}
+
 // add a new entry in the database version history
 func (dm *DbMan) setDbVersion(appVer string, dbVersion string, description string, path string) error {
 	var err error = nil

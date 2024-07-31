@@ -37,9 +37,11 @@ func InitialiseDbCmd() *DbCmd {
 	dbRestoreCmd := NewDbRestoreCmd()
 	dbInfoCmd := NewDbInfoCmd()
 	dbWaitCmd := NewWaitCmd()
+	dbRunCmd := NewDbRunCmd()
 	dbCmd.cmd.AddCommand(dbVersionCmd.cmd,
 		dbCreateCmd.cmd,
 		dbDeployCmd.cmd,
+		dbRunCmd.cmd,
 		dbUpgradeCmd.cmd,
 		dbQueryCmd.cmd,
 		dbQueriesCmd.cmd,
