@@ -232,7 +232,7 @@ func (db *PgSQLProvider) RunQuery(query *Query) (*Table, error) {
 // version: struct containing version information to persist in the database
 func (db *PgSQLProvider) SetVersion(version *Version) error {
 	// create a db connection
-	conn, err := db.newConn(false, true)
+	conn, err := db.newConn(true, true)
 	// if error then return it
 	if err != nil {
 		return err
