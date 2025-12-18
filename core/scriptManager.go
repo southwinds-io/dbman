@@ -256,7 +256,7 @@ func (s ScriptManager) getRepoUri() (string, error) {
 		return "", errors.New(fmt.Sprintf("!!! The Repo.URI is not defined"))
 	}
 	// if the username and password have been set
-	if len(s.get(RepoUsername)) > 0 && len(s.get(RepoPassword)) > 0 {
+	if len(s.get(RepoUsername)) > 0 && len(s.get(RepoPassword)) > 0 && strings.HasPrefix(uri, "http") {
 		uriParts := strings.Split(uri, "//")
 		return fmt.Sprintf("%s//%s:%s@%s", uriParts[0], s.get(RepoUsername), s.get(RepoPassword), uriParts[1]), nil
 	}
