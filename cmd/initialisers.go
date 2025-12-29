@@ -28,6 +28,7 @@ func InitialiseReleaseCmd() *ReleaseCmd {
 func InitialiseDbCmd() *DbCmd {
 	dbCmd := NewDbCmd()
 	dbVersionCmd := NewDbVersionCmd()
+	dbDiffCmd := NewDbDiffCmd()
 	dbCreateCmd := NewDbCreateCmd()
 	dbDeployCmd := NewDbDeployCmd()
 	dbUpgradeCmd := NewDbUpgradeCmd()
@@ -39,6 +40,8 @@ func InitialiseDbCmd() *DbCmd {
 	dbWaitCmd := NewWaitCmd()
 	dbRunCmd := NewDbRunCmd()
 	dbCmd.cmd.AddCommand(dbVersionCmd.cmd,
+		dbDiffCmd.cmd,
+		dbDeployCmd.cmd,
 		dbCreateCmd.cmd,
 		dbDeployCmd.cmd,
 		dbRunCmd.cmd,
